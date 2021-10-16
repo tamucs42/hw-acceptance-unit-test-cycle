@@ -23,3 +23,9 @@ Then /I should see all the movies/ do
     step %{I should see "#{movie.title}"}
   end
 end
+
+When /I go to the edit page for "(.*)"/ do |movie|
+  steps %{I follow "More about #{movie}"}
+  steps %{I press "Edit"}
+end
+

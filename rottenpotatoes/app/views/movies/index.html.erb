@@ -1,14 +1,43 @@
 <!--  This file is app/views/movies/index.html.erb -->
 <h2>All Movies</h2>
 
-<%#  Part 2: Start here... %>
+<%#  Part 2: Start here...from hw2 https://github.com/tamucs42/hw-rails-intro/blob/master/app/views/movies/index.html.erb %>
+<%= form_tag movies_path, :method => :get do %>
+  Include:
+  <% @all_ratings.each do |rating| %>
+    <%= rating %>
+    <% if params.has_key?(:ratings) and params[:ratings][rating] %>
+      <%= check_box_tag "ratings[#{rating}]", 1, true %>
+    <% else %>
+      <%= check_box_tag "ratings[#{rating}]", 1 %>
+    <% end %>
+  <% end %>
+  <%= submit_tag 'Refresh', :class => 'btn btn-primary' %>
+<% end %>
 
 <table class="table table-striped col-md-12" id="movies">
   <thead>
     <tr>
-      <th>Movie Title</th>
+      <% if params[:order] == 'title' %>
+        <th class='hilite p-3 mb-2 bg-warning text-dark'>Movie Title</th>
+      <% else %>
+        <th>
+        <%= link_to "Movie Title",                         # :class => "#{'hilite p-3 mb-2 bg-warning text-dark' if params[:order]=='title'}"
+          movies_path(params.merge(:order => 'title')),
+          :id => "title_header"%>
+        </th> 
+      <% end %>
       <th>Rating</th>
-      <th>Release Date</th>
+      <% if params[:order] == 'date' %>
+        <th class='hilite p-3 mb-2 bg-warning text-dark'>Release Date</th>
+      <% else %>
+        <th>
+        <%= link_to "Release Date",                         # :class => "#{'hilite p-3 mb-2 bg-warning text-dark' if params[:order]=='title'}"
+          movies_path(params.merge(:order => 'date')),
+          :id => "release_date_header"%>
+        </th> 
+      <% end %>
+      <th>Director</th>
       <th>More Info</th>
     </tr>
   </thead>
@@ -23,6 +52,9 @@
         </td>
         <td>
           <%= movie.release_date %>
+        </td>
+        <td>
+          <%= movie.director %>
         </td>
         <td>
           <%= link_to "More about #{movie.title}", movie_path(movie) %>
