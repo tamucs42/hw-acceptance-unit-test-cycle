@@ -13,6 +13,7 @@ rails s -p $PORT -b $IP
 2. rake db:migrate RAILS_ENV=test
 
 3. cucumber 
+cucumber --guess
 
 
 > rails generate active_record:migration AddDirector'

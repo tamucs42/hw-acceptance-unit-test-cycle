@@ -25,7 +25,17 @@ Then /I should see all the movies/ do
 end
 
 When /I go to the edit page for "(.*)"/ do |movie|
-  steps %{I follow "More about #{movie}"}
-  steps %{I press "Edit"}
+  title = Movie.find_by(title: movie).id
+  #steps %{I go to }
+  visit edit_movie_path(title)
+  #steps %{I follow "More about #{movie}"}
+  #steps %{I press "Edit"}
 end
 
+Then /the director of "(.*)" should be "(.*)"/ do |movie,dir|
+  title = Movie.find_by(title: movie)
+  #title.director.include?(dir)
+  #step %{The director field within #{movie} should contain #{dir}}
+  #assert_equal title.director,dir
+  title.director.should include(dir)
+end
